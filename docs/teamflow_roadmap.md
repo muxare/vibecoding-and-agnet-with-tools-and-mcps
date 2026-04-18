@@ -204,15 +204,15 @@ A prompt is not a question, it is a specification. Learners see how role framing
 
 ### Todos
 
-- [ ] Build `TriageAgent` as a `ChatCompletionAgent` with no plugins
-- [ ] Write v1 prompt: a single sentence — "Is this simple or complex?"
-- [ ] Observe messy output; commit it as teaching evidence
-- [ ] Iterate to v2: add role ("You classify research tasks")
-- [ ] Iterate to v3: add explicit JSON schema in the prompt
-- [ ] Iterate to v4: add two few-shot examples (one simple, one complex)
-- [ ] Use SK structured output to enforce the JSON schema at runtime
-- [ ] Store each prompt version as a file so learners can diff them
-- [ ] Wire `TriageAgent` into `POST /tasks`; store `Kind` on the task
+- [x] Build `TriageAgent` as a `ChatCompletionAgent` with no plugins
+- [x] Write v1 prompt: a single sentence — "Is this simple or complex?"
+- [x] Observe messy output; commit it as teaching evidence
+- [x] Iterate to v2: add role ("You classify research tasks")
+- [x] Iterate to v3: add explicit JSON schema in the prompt
+- [x] Iterate to v4: add two few-shot examples (one simple, one complex)
+- [x] Use SK structured output to enforce the JSON schema at runtime
+- [x] Store each prompt version as a file so learners can diff them
+- [x] Wire `TriageAgent` into `POST /tasks`; store `Kind` on the task
 
 ### Demo
 

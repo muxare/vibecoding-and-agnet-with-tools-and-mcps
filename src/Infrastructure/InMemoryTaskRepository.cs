@@ -18,4 +18,11 @@ public sealed class InMemoryTaskRepository : ITaskRepository
         _store.TryGetValue(id, out var task);
         return Task.FromResult(task);
     }
+
+    public Task<ResearchTask?> UpdateAsync(ResearchTask task, CancellationToken ct = default)
+    {
+        if (!_store.ContainsKey(task.Id)) return Task.FromResult<ResearchTask?>(null);
+        _store[task.Id] = task;
+        return Task.FromResult<ResearchTask?>(task);
+    }
 }
