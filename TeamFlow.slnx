@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Agents/">
+    <Project Path="src/Agents/TeamFlow.Agents.csproj" />
+  </Folder>
+  <Folder Name="/src/Api/">
+    <Project Path="src/Api/TeamFlow.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/Core/">
+    <Project Path="src/Core/TeamFlow.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="src/Infrastructure/TeamFlow.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Tests/">
+    <Project Path="src/Tests/TeamFlow.Tests.csproj" />
+  </Folder>
+</Solution>

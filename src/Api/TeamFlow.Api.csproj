@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\TeamFlow.Core.csproj" />
+    <ProjectReference Include="..\Agents\TeamFlow.Agents.csproj" />
+    <ProjectReference Include="..\Infrastructure\TeamFlow.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>1ae5716b-1d14-4247-99b7-d4024fd14cde</UserSecretsId>
+  </PropertyGroup>
+
+</Project>
