@@ -238,14 +238,14 @@ A tool is a function with a name, a description, and a typed signature. The mode
 
 ### Todos
 
-- [ ] Create `WebSearchPlugin` with two `[KernelFunction]` methods: `search(query)` and `fetch(url)`
-- [ ] Write crisp XML-doc descriptions on each — these are the prompts the model reads
-- [ ] Pick one search provider behind an `ISearchProvider` interface (Brave, Tavily, or Bing)
-- [ ] Build `ResearchAgent` with the plugin and auto function calling enabled
-- [ ] Log every tool call with arguments and result size
-- [ ] For now: wire `TriageAgent` to return `Kind`; if Simple, call `ResearchAgent` directly from code
-- [ ] Add a tool-call budget (max *N* calls per task) enforced in the invocation loop
-- [ ] Return findings as structured records: `{ claim, sourceUrl, confidence }`
+- [x] Create `WebSearchPlugin` with two `[KernelFunction]` methods: `search(query)` and `fetch(url)`
+- [x] Write crisp XML-doc descriptions on each — these are the prompts the model reads
+- [x] Pick one search provider behind an `ISearchProvider` interface (Brave, Tavily, or Bing)
+- [x] Build `ResearchAgent` with the plugin and auto function calling enabled
+- [x] Log every tool call with arguments and result size
+- [x] For now: wire `TriageAgent` to return `Kind`; if Simple, call `ResearchAgent` directly from code
+- [x] Add a tool-call budget (max *N* calls per task) enforced in the invocation loop
+- [x] Return findings as structured records: `{ claim, sourceUrl, confidence }`
 
 ### Demo
 

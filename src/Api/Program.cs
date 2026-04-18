@@ -16,9 +16,15 @@ builder.Host.UseSerilog((ctx, cfg) => cfg
 builder.Services.AddSingleton<ITaskRepository, InMemoryTaskRepository>();
 
 builder.Services.Configure<TriageOptions>(builder.Configuration.GetSection("Triage"));
+builder.Services.Configure<ResearchOptions>(builder.Configuration.GetSection("Research"));
 builder.Services.Configure<OpenAIOptions>(builder.Configuration.GetSection("OpenAI"));
 builder.Services.AddSingleton<TriageAgentFactory>();
 builder.Services.AddSingleton<ITriageClassifier, TriageClassifier>();
+
+builder.Services.AddHttpClient<ISearchProvider, TavilySearchProvider>();
+builder.Services.AddHttpClient<WebSearchPlugin>();
+builder.Services.AddSingleton<ResearchAgentFactory>();
+builder.Services.AddSingleton<IResearcher, Researcher>();
 
 var app = builder.Build();
 
@@ -30,6 +36,7 @@ app.MapPost("/tasks", async (
     CreateTaskRequest req,
     ITaskRepository repo,
     ITriageClassifier triage,
+    IResearcher researcher,
     ILogger<Program> log,
     CancellationToken ct) =>
 {
@@ -48,10 +55,28 @@ app.MapPost("/tasks", async (
             task = task with { Kind = result.Kind };
             await repo.UpdateAsync(task, ct);
             log.LogInformation("Task classified as {Kind}: {Reasoning}", result.Kind, result.Reasoning);
+
+            // Phase 2: intentionally ugly C# glue — "if Simple, call ResearchAgent".
+            // Phase 4 will replace this with a handoff tool call. Do not elegant-ify.
+            if (result.Kind == "Simple")
+            {
+                var research = await researcher.ResearchAsync(task.Prompt, ct);
+                task = task with
+                {
+                    Answer = research.Answer,
+                    Findings = research.Findings
+                        .Select(f => new TaskFinding(f.Claim, f.SourceUrl, f.Confidence))
+                        .ToList(),
+                };
+                await repo.UpdateAsync(task, ct);
+                log.LogInformation(
+                    "Research complete: findings={FindingCount} answerLength={AnswerLength}",
+                    research.Findings.Count, research.Answer.Length);
+            }
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "Triage classification failed; task stored without Kind");
+            log.LogError(ex, "Triage or research failed; task stored with whatever completed before the error");
         }
     }
     return Results.Created($"/tasks/{task.Id}", task);
