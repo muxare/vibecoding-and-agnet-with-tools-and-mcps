@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
@@ -12,7 +13,6 @@ public sealed class ResearchAgentFactory
     private readonly OpenAIOptions _openAI;
     private readonly WebSearchPlugin _plugin;
     private readonly ILoggerFactory _logs;
-    private readonly string _instructions;
 
     public ResearchAgentFactory(
         IOptions<ResearchOptions> research,
@@ -24,7 +24,6 @@ public sealed class ResearchAgentFactory
         _openAI = openAI.Value;
         _plugin = plugin;
         _logs = logs;
-        _instructions = PromptLoader.Load(_research.PromptsDirectory, "research", _research.PromptVersion);
     }
 
     public string PromptVersion => _research.PromptVersion;
@@ -38,6 +37,15 @@ public sealed class ResearchAgentFactory
         if (string.IsNullOrWhiteSpace(_openAI.ApiKey))
             throw new InvalidOperationException(
                 "OpenAI:ApiKey is not configured. Set it via `dotnet user-secrets set OpenAI:ApiKey <key>` in src/Api.");
+
+        var vars = new Dictionary<string, string>
+        {
+            ["max_tool_calls"] = _research.MaxToolCalls.ToString(CultureInfo.InvariantCulture),
+            ["max_fetch_chars"] = _research.MaxFetchChars.ToString(CultureInfo.InvariantCulture),
+            ["current_date"] = DateTimeOffset.UtcNow.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+        };
+        var instructions = PromptLoader.LoadRendered(
+            _research.PromptsDirectory, "research", _research.PromptVersion, vars);
 
         var kernel = Kernel.CreateBuilder()
             .AddOpenAIChatCompletion(modelId: _openAI.Model, apiKey: _openAI.ApiKey)
@@ -58,7 +66,7 @@ public sealed class ResearchAgentFactory
         var agent = new ChatCompletionAgent
         {
             Name = "ResearchAgent",
-            Instructions = _instructions,
+            Instructions = instructions,
             Kernel = kernel,
             Arguments = new KernelArguments(settings),
         };

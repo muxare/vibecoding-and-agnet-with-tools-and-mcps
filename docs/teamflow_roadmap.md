@@ -271,14 +271,14 @@ Prompt engineering is not folklore. There are reusable patterns: system/role sep
 
 ### Todos
 
-- [ ] Move prompts out of C# strings into `.prompty` or resource files
-- [ ] Template variables with Handlebars or SK prompt templates
-- [ ] Version prompts (v1, v2, ...) and keep old versions alongside
-- [ ] Introduce XML-delimited input sections: `<task>`, `<constraints>`, `<examples>`
-- [ ] Add a "think step by step" block to `ResearchAgent` and measure quality change
-- [ ] Enforce output schemas with SK's structured output or JSON mode
-- [ ] Add negative examples — "do NOT return prose, do NOT include URLs without citation"
-- [ ] Write a prompt style guide in `docs/prompts/README.md`
+- [x] Move prompts out of C# strings into `.prompty` or resource files
+- [x] Template variables with Handlebars or SK prompt templates
+- [x] Version prompts (v1, v2, ...) and keep old versions alongside
+- [x] Introduce XML-delimited input sections: `<task>`, `<constraints>`, `<examples>`
+- [x] Add a "think step by step" block to `ResearchAgent` and measure quality change
+- [x] Enforce output schemas with SK's structured output or JSON mode
+- [x] Add negative examples — "do NOT return prose, do NOT include URLs without citation"
+- [x] Write a prompt style guide in `docs/prompts/README.md`
 
 ### Demo
 
